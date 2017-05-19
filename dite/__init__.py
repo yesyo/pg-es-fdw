@@ -42,7 +42,7 @@ class ElasticsearchFDW (ForeignDataWrapper):
 
     def execute(self, quals, columns):
         conn = httplib.HTTPConnection(self.host, self.port)
-        conn.request("GET", "/%s/%s/_search&size=10000" % (self.node, self.index))
+        conn.request("GET", "/%s/%s/_search?size=10000" % (self.node, self.index))
         resp = conn.getresponse()
         if not 200 == resp.status:
             yield {0, 0}
