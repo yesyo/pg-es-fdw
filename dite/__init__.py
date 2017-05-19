@@ -68,8 +68,14 @@ class ElasticsearchFDW (ForeignDataWrapper):
         """
         return 'id';
 
+    def date_handler(obj):
+        if hasattr(obj, 'isoformat'):
+            return obj.isoformat()
+        else:
+            raise TypeError
+
     def es_index(self, id, values):
-        content = json.dumps(values)
+        content = json.dumps(values, default=self.date_handler)
 
         conn = httplib.HTTPConnection(self.host, self.port)
         conn.request("PUT", "/%s/%s/%s" % (self.node, self.index, id), content)
