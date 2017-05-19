@@ -45,7 +45,7 @@ class ElasticsearchFDW (ForeignDataWrapper):
         conn.request("GET", "/%s/%s/_search?size=10000" % (self.node, self.index))
         resp = conn.getresponse()
         if not 200 == resp.status:
-            yield {0, 0}
+            yield {}
 
         raw = resp.read()
         data = json.loads(raw)
